@@ -27,6 +27,7 @@ function createPromise(position, delay) {
     });
 }
 
+
 let delay = refs.inputDelayEl.value;
 const step = refs.inputStepEl.value;
 const amount = refs.inputAmountEl.value;
