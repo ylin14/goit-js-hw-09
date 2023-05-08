@@ -43,7 +43,6 @@ function eventIntervalCounter() {
   if (diff < 0) {
     clearInterval(timeInterval);
 
-    refs.startBtn.removeAttribute('disabled');
     Notify.info('Є тільки два дні на рік, коли ти не можеш нічого зробити: вчора і завтра! Повертайся до роботи!');
     return timerMarkup();
 
