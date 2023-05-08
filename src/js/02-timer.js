@@ -10,7 +10,6 @@ const refs = {
   minutesRef: document.querySelector('[data-minutes]'),
   secondsRef: document.querySelector('[data-seconds]'),
 };
-refs.startBtn.disabled = true;
 
 const options = {
   enableTime: true,
@@ -20,7 +19,7 @@ const options = {
   enableSeconds: true,
   onClose(selectedDates) {
     if (selectedDates[0].getTime() > Date.now()) {
-      refs.startBtn.disabled = false;
+      refs.startBtn.removeAttribute('disabled');
     } else {
       Notify.failure('Дивись на життя через лобове скло, а не в дзеркало заднього виду');
     }
@@ -31,7 +30,8 @@ const fp = flatpickr(refs.datetimePicker, options);
 
 let timeInterval;
 
-function onStartBtnClick(event) {
+function onStartBtnClick() {
+  refs.startBtn.setAttribute('disabled', '');
   timeInterval = setInterval(eventIntervalCounter, 1000);
 }
 
@@ -42,9 +42,12 @@ function eventIntervalCounter() {
 
   if (diff < 0) {
     clearInterval(timeInterval);
-    refs.startBtn.disabled = true;
+
+    refs.startBtn.removeAttribute('disabled');
     Notify.info('Є тільки два дні на рік, коли ти не можеш нічого зробити: вчора і завтра! Повертайся до роботи!');
     return timerMarkup();
+
+
   }
   timerMarkup(convertedDate);
 }
@@ -55,8 +58,6 @@ function timerMarkup({ days, hours, minutes, seconds }) {
   refs.minutesRef.textContent = `${minutes}`.padStart(2, 0);
   refs.secondsRef.textContent = `${seconds}`.padStart(2, 0);
 }
-
-refs.startBtn.addEventListener('click', onStartBtnClick);
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -77,20 +78,4 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-// // при кліку на кнопку старт почнається відлік часу до обраної дати
-// // таймер відліку має оновлюватись кожну секунду
-// // значення таймера записуються у розмітку окремо по дням, годинам і тд
-//
-//   console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-//   console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-//   console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
-
-// function onStartBtnClick (event) {
-//   startTimer(defaultDate ,selectedDates);
-//   renderTimerMarkup();
-// };
-
-// function startTimer(currentTime, chosenTime) {
-//   return setInterval(() => chosenTime - currentTime, 1000;
-// };
+refs.startBtn.addEventListener('click', onStartBtnClick);
